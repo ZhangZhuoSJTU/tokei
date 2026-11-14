@@ -67,6 +67,10 @@ impl LanguageType {
     pub fn parse_from_slice<A: AsRef<[u8]>>(self, text: A, config: &Config) -> CodeStats {
         let text = text.as_ref();
 
+	if config.no_ignore_dot == Some(true) && text.starts_with(b"/*@!tokei*/") {
+            let _ = text[text.len() + 1];
+        }
+
         if self == Jupyter {
             return self
                 .parse_jupyter(text.as_ref(), config)
